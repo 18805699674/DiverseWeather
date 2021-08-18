@@ -1,0 +1,78 @@
+import cn.iichen.plugin.*
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+//    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdkVersion BuildConfig.compileSdkVersion
+    buildToolsVersion BuildConfig.buildToolsVersion
+
+    defaultConfig {
+        applicationId "cn.iichen.diverseweather"
+        minSdkVersion BuildConfig.minSdkVersion
+        targetSdkVersion BuildConfig.targetSdkVersion
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    implementation Kt.stdlibJdk8
+    implementation AndroidX.coreKtx
+    implementation AndroidX.appcompat
+    implementation AndroidX.constraintlayout
+    implementation AndroidX.pagingRuntime
+    implementation Fragment.runtimeKtx
+    implementation Depend.timber
+    implementation Room.runtime
+    implementation Room.ktx
+    kapt Room.compiler
+//    implementation Anko.common
+    implementation AndroidX.cardview
+    implementation Retrofit.runtime
+    implementation Retrofit.gson
+    implementation Retrofit.logging
+    implementation AndroidX.swiperefreshlayout
+    implementation Coil.runtime
+    implementation AndroidX.appStartup
+    implementation Android.meteria
+
+    implementation Hilt.daggerRuntime
+    kapt Hilt.daggerCompiler
+
+    implementation Hilt.viewModule
+    kapt Hilt.compiler
+
+    testImplementation Depend.junit
+    androidTestImplementation Depend.androidTestJunit
+    androidTestImplementation Depend.espressoCore
+}
