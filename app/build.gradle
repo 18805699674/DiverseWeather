@@ -3,7 +3,7 @@ import cn.iichen.plugin.*
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'kotlin-kapt' // databinding需要
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
 }

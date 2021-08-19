@@ -3,30 +3,30 @@ package cn.iichen.plugin
 object Versions {
     const val retrofit = "2.9.0"
     const val okhttpLogging = "4.9.0"
-    const val appcompat = "1.2.0"
-    const val coreKtx = "1.3.2"
-    const val constraintlayout = "2.0.4"
-    const val paging = "3.0.0-alpha02"
+    const val appcompat = "1.3.1"
+    const val coreKtx = "1.6.0"
+    const val constraintlayout = "2.1.0"
+    const val paging = "3.0.1"
     const val timber = "4.7.1"
     const val kotlin = "1.4.20"
     const val kotlinCoroutinesCore = "1.3.7"
     const val kotlinCoroutinesAndrid = "1.3.6"
     const val koin = "2.1.5"
     const val work = "2.2.0"
-    const val room = "2.3.0-alpha01"
+    const val room = "2.3.0"
     const val cardview = "1.0.0"
     const val recyclerview = "1.0.0"
-    const val fragment = "1.3.0-alpha06"
+    const val fragment = "1.3.6"
     const val anko = "0.10.8"
     const val swiperefreshlayout = "1.1.0"
     const val junit = "4.13.1"
     const val junitExt = "1.1.2"
     const val espressoCore = "3.3.0"
     const val runtime = "1.1.0"
-    const val hit = "2.28-alpha"
+    const val hit = "2.38.1"
     const val hitViewModule = "1.0.0-alpha01"
     const val appStartup = "1.0.0"
-    const val material = "1.2.1"
+    const val material = "1.4.0"
 }
 
 object AndroidX {
@@ -93,7 +93,7 @@ object Koin {
 }
 
 object Anko {
-    const val common = "org.jetbrains.anko:anko-commons:${Versions.anko}"
+    const val common = "org.jetbrains.anko:anko-common:${Versions.anko}"
     const val sqlite = "org.jetbrains.anko:anko-sqlite:${Versions.anko}"
     const val coroutines = "org.jetbrains.anko:anko-coroutines:${Versions.anko}"
     const val design = "org.jetbrains.anko:anko-design:${Versions.anko}" // For SnackBars
