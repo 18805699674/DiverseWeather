@@ -27,6 +27,8 @@ object Versions {
     const val hitViewModule = "1.0.0-alpha01"
     const val appStartup = "1.0.0"
     const val material = "1.4.0"
+    const val immersionBar = "3.0.0"
+    const val codeUtils = "1.30.6"
 }
 
 object AndroidX {
@@ -113,3 +115,15 @@ object Depend {
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 }
 
+object ImmersionBar{
+    // 基础依赖包，必须要依赖
+    const val core = "com.gyf.immersionbar:immersionbar:${Versions.immersionBar}"
+    // fragment快速实现（可选）
+    const val component = "com.gyf.immersionbar:immersionbar-components:${Versions.immersionBar}"
+    // kotlin扩展（可选）
+    const val ktx = "com.gyf.immersionbar:immersionbar-ktx:${Versions.immersionBar}"
+}
+
+object CodeUtils{
+    const val core = "com.blankj:utilcodex:${Versions.codeUtils}"
+}

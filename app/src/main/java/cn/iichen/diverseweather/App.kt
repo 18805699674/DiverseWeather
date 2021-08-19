@@ -3,6 +3,7 @@ package cn.iichen.diverseweather
 import android.app.Application
 import android.content.Context
 import android.os.StrictMode
+import com.qweather.sdk.view.HeConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -12,7 +13,17 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // 日志、运行配置
         init(this)
+        // 其他库
+        initPacket()
+    }
+
+    private fun initPacket() {
+        HeConfig.init("HE2108191358591295", "4c85ffe4575c40d38fd3f36aef6f6ca8")
+        //切换至开发版服务
+        HeConfig.switchToDevService()
+
     }
 
     private fun init(context: Context) {
