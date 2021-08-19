@@ -51,5 +51,13 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+
+        <!--    高德定位    -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="43b71354cc27a2902eff01e627b16334"/>
+        <service android:name="com.amap.api.location.APSService"/>
+
+
     </application>
 </manifest>

@@ -33,7 +33,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
 
     buildFeatures {
@@ -43,7 +44,6 @@ android {
 }
 
 dependencies {
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation Kt.stdlibJdk8
@@ -56,7 +56,7 @@ dependencies {
     implementation Room.runtime
     implementation Room.ktx
     kapt Room.compiler
-//    implementation Anko.commonx
+    implementation Anko.common
     implementation AndroidX.cardview
     implementation Retrofit.runtime
     implementation Retrofit.gson
@@ -67,9 +67,9 @@ dependencies {
     implementation Android.meteria
 
     implementation CodeUtils.core
-//    implementation ImmersionBar.core
-//    implementation ImmersionBar.component
-//    implementation ImmersionBar.ktx
+    implementation ImmersionBar.core
+    implementation ImmersionBar.component
+    implementation ImmersionBar.ktx
 
     implementation Hilt.daggerRuntime
     kapt Hilt.daggerCompiler

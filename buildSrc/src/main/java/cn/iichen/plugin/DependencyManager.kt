@@ -95,7 +95,7 @@ object Koin {
 }
 
 object Anko {
-    const val common = "org.jetbrains.anko:anko-common:${Versions.anko}"
+    const val common = "org.jetbrains.anko:anko-commons:${Versions.anko}"
     const val sqlite = "org.jetbrains.anko:anko-sqlite:${Versions.anko}"
     const val coroutines = "org.jetbrains.anko:anko-coroutines:${Versions.anko}"
     const val design = "org.jetbrains.anko:anko-design:${Versions.anko}" // For SnackBars
