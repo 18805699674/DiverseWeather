@@ -1,5 +1,13 @@
 package cn.iichen.diverseweather.base
 
+import android.os.Bundle
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleObserver
+import com.afollestad.materialdialogs.MaterialDialog
+import com.blankj.utilcode.util.SnackbarUtils
+import com.blankj.utilcode.util.ToastUtils
+
 /**
  *
  * @ProjectName:    DiverseWeather
@@ -32,8 +40,33 @@ package cn.iichen.diverseweather.base
  */
 
 
-class BaseActivity {
+abstract class BaseActivity : AppCompatActivity(),LifecycleObserver{
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(getLayRes())
+        initView()
+        initData()
+    }
 
+    open fun initData() {}
+
+    open fun initView() {}
+
+    abstract fun getLayRes(): Int
+
+    open fun showSnackbar(isSuccess: Boolean, msg: String) {
+//        SnackbarUtils.with(mContentView)
+//            .setDuration(SnackbarUtils.LENGTH_LONG)
+//            .setMessage(msg)
+//            .apply {
+//                if (isSuccess) {
+//                    showSuccess()
+//                } else {
+//                    showError()
+//                }
+//            }
+        ToastUtils.showShort(msg)
+    }
 }
 
 

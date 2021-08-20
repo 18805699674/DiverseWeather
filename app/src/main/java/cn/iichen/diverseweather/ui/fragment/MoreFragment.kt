@@ -1,5 +1,10 @@
 package cn.iichen.diverseweather.ui.fragment
 
+import android.content.Context
+import cn.iichen.diverseweather.R
+import cn.iichen.diverseweather.base.BaseFragment
+import timber.log.Timber
+
 /**
  *
  * @ProjectName:    DiverseWeather
@@ -10,7 +15,7 @@ package cn.iichen.diverseweather.ui.fragment
  * @CreateDate:     2021/8/19 15:57
  * @UpdateUser:     更新者：qsdiao
  * @UpdateDate:     2021/8/19 15:57
- * @UpdateRemark:   更新说明：Fuck code, go to hell, serious people who maintain it：
+ * @UpdateRemark:   更新说明：底部导航Tab页  台风、潮汐等
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
 ┏┛┻━━━┛┻┓
@@ -32,5 +37,12 @@ package cn.iichen.diverseweather.ui.fragment
  */
 
 
-class placeHodler {
+class MoreFragment : BaseFragment() {
+    override fun initLayout(): Int = R.layout.tab_frag_more
+
+    override fun initData(context: Context?) {
+        Timber.d("MoreFragment")
+    }
 }
+
+

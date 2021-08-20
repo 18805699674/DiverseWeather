@@ -47,6 +47,11 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation Kt.stdlibJdk8
+    implementation SmartSwipe.core
+    implementation Mmkv.core
+    implementation Dialog.core
+    implementation Dialog.bottomSheets
+    implementation Dialog.lifecycle
     implementation AndroidX.coreKtx
     implementation AndroidX.appcompat
     implementation AndroidX.constraintlayout

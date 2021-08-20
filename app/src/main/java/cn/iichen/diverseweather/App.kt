@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.StrictMode
 import com.qweather.sdk.view.HeConfig
+import com.tencent.mmkv.MMKV
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -23,6 +24,8 @@ class App : Application() {
         HeConfig.init("HE2108191358591295", "4c85ffe4575c40d38fd3f36aef6f6ca8")
         //切换至开发版服务
         HeConfig.switchToDevService()
+
+        MMKV.initialize(this)
 
     }
 
@@ -47,6 +50,51 @@ class App : Application() {
         }
     }
 }
+/*
+    MMKV使用：
+        1. 存储与读取
+            val kv: MMKV = MMKV.defaultMMKV()     使用方法
+            kv.encode("bool", true)
+            kv.decodeBool("bool")
+        2. 删除和查询
+            MMKV kv = MMKV.defaultMMKV();
+            kv.removeValueForKey("bool");
+            kv.containsKey("bool")
+        3. 隔离分开
+            MMKV kv = MMKV.mmkvWithID("MyID");
+            kv.encode("bool", true);
+        4. 跨进程
+            MMKV kv = MMKV.mmkvWithID("InterProcessKV", MMKV.MULTI_PROCESS_MODE);
+            kv.encode("bool", true);
+
+    侧滑库：
+        https://qibilly.com/SmartSwipe-tutorial/pages/consumers/SpaceConsumer.html
+
+    MaterialDialog： https://github.com/afollestad/material-dialogs/blob/main/documentation/CORE.md
+        # 自动销毁
+            MaterialDialog(this).show {
+              lifecycleOwner(owner)
+            }
+        # BottomSheet
+            MaterialDialog ( this , BottomSheet (WRAP_CONTENT)).show {
+                // 设置高度
+                setPeekHeight(res =  R .dimen.my_default_peek_height)
+               //文字，内部转换为 dp 所以 16dp
+              cornerRadius( 16f )
+               //鼓励使用dimen，因为从一个地方更改所有实例更容易
+              cornerRadius(res =  R . dimen.my_corner_radius)
+            }
+
+    用户引导：
+        https://github.com/binIoter/GuideView
+        https://github.com/hongyangAndroid/Highlight
+
+    骨架屏：
+        https://github.com/ethanhua/Skeleton
+
+    高德定位文档：
+        https://lbs.amap.com/api/android-location-sdk/guide/android-location/getlocation
+ */
 
 
 /**

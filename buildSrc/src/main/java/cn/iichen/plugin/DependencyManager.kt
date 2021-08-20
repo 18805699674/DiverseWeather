@@ -29,6 +29,28 @@ object Versions {
     const val material = "1.4.0"
     const val immersionBar = "3.0.0"
     const val codeUtils = "1.30.6"
+    const val dialog = "3.3.0"
+    const val mmkv = "1.2.10"
+    const val smartSwipe = "1.0.8"
+}
+object SmartSwipe{
+    const val core =  "com.billy.android:smart-swipe:${Versions.smartSwipe}"
+    //android x环境下兼容NestedScrolling
+//    const val extend =x 'com.billy.android:smart-swipe-x:latestVersion
+}
+
+object Mmkv{
+    const val core = "com.tencent:mmkv-static:${Versions.mmkv}"
+}
+
+object Dialog{
+    const val core =  "com.afollestad.material-dialogs:core:${Versions.dialog}"
+//    const val input =  "com.afollestad.material-dialogs:input:${Versions.dialog}"
+//    const val file =  "com.afollestad.material-dialogs:files:${Versions.dialog}"
+//    const val color =  "com.afollestad.material-dialogs:color:${Versions.dialog}"
+//    const val datatime =  "com.afollestad.material-dialogs:datetime:${Versions.dialog}"
+    const val bottomSheets =  "com.afollestad.material-dialogs:bottomsheets:${Versions.dialog}"
+    const val lifecycle =  "com.afollestad.material-dialogs:lifecycle:${Versions.dialog}"
 }
 
 object AndroidX {
