@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marginTop">10dp</dimen>
+    <dimen name="marginLeft">40dp</dimen>
+    <dimen name="marginRight">10dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+
+    <dimen name="sp_14">14sp</dimen>.
+    <dimen name="sp_20">20sp</dimen>.
+
+    <dimen name="dp_20">20dp</dimen>
+</resources>

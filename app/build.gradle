@@ -9,6 +9,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('D:\\FileWork\\Android_Work\\DiverseWeather\\keyStore.jks')
+            storePassword 'iichen.1124'
+            keyAlias 'iichen'
+            keyPassword 'iichen.1124'
+        }
+    }
     compileSdkVersion BuildConfig.compileSdkVersion
     buildToolsVersion BuildConfig.buildToolsVersion
 
@@ -85,4 +93,11 @@ dependencies {
     testImplementation Depend.junit
     androidTestImplementation Depend.androidTestJunit
     androidTestImplementation Depend.espressoCore
+
+    implementation Permission.core
+    kapt Permission.compiler
+
+    implementation Loading.core
+
+    implementation BaseRecycle.core
 }

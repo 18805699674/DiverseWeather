@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ToolbarTitle"
+        parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--这是多类型页面-->
+    <declare-styleable name="MultiStateView">
+        <attr name="ii_loadingView" format="reference" />
+        <attr name="ii_emptyView" format="reference" />
+        <attr name="ii_errorView" format="reference" />
+        <attr name="ii_netView" format="reference" />
+        <attr name="ii_viewState" format="enum">
+            <enum name="content" value="0" />
+            <enum name="error" value="1" />
+            <enum name="empty" value="2" />
+            <enum name="loading" value="3" />
+            <enum name="offline" value="4" />
+        </attr>
+        <attr name="ii_animateViewChanges" format="boolean" />
+    </declare-styleable>
+
+
+</resources>

@@ -7,6 +7,17 @@ import androidx.lifecycle.LifecycleObserver
 import com.afollestad.materialdialogs.MaterialDialog
 import com.blankj.utilcode.util.SnackbarUtils
 import com.blankj.utilcode.util.ToastUtils
+import permissions.dispatcher.RuntimePermissions
+import cn.iichen.diverseweather.ui.activity.MainActivity
+
+import android.app.Activity
+import cn.iichen.diverseweather.R
+
+import com.billy.android.swipe.SmartSwipeBack
+import com.billy.android.swipe.SmartSwipeBack.ActivitySwipeBackFilter
+import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.ktx.immersionBar
+
 
 /**
  *
@@ -39,11 +50,25 @@ import com.blankj.utilcode.util.ToastUtils
 ┗┻┛　┗┻┛
  */
 
+abstract class BaseActivity : AppCompatActivity(){
 
-abstract class BaseActivity : AppCompatActivity(),LifecycleObserver{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayRes())
+//        setContentView(getLayRes())
+        // 除了指定的MainActivity 全部滑动返回
+        SmartSwipeBack.activitySlidingBack(
+            application
+        ) { activity -> //根据传入的activity，返回true代表需要侧滑返回；false表示不需要侧滑返回
+            activity !is MainActivity
+        }
+
+        immersionBar {
+            statusBarColor(R.color.colorPrimary)
+            // 上面的文本颜色
+            statusBarDarkFont(true)
+            navigationBarColor(R.color.colorPrimary)
+        }
+
         initView()
         initData()
     }
@@ -52,21 +77,6 @@ abstract class BaseActivity : AppCompatActivity(),LifecycleObserver{
 
     open fun initView() {}
 
-    abstract fun getLayRes(): Int
-
-    open fun showSnackbar(isSuccess: Boolean, msg: String) {
-//        SnackbarUtils.with(mContentView)
-//            .setDuration(SnackbarUtils.LENGTH_LONG)
-//            .setMessage(msg)
-//            .apply {
-//                if (isSuccess) {
-//                    showSuccess()
-//                } else {
-//                    showError()
-//                }
-//            }
-        ToastUtils.showShort(msg)
-    }
 }
 
 

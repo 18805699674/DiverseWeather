@@ -10,7 +10,6 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class App : Application() {
-    lateinit var mContext: Context
 
     override fun onCreate() {
         super.onCreate()
@@ -26,11 +25,9 @@ class App : Application() {
         HeConfig.switchToDevService()
 
         MMKV.initialize(this)
-
     }
 
     private fun init(context: Context) {
-        this.mContext = context
         if (!BuildConfig.DEBUG) {
             Timber.plant(CrashReportingTree())
             return
@@ -94,6 +91,29 @@ class App : Application() {
 
     高德定位文档：
         https://lbs.amap.com/api/android-location-sdk/guide/android-location/getlocation
+
+    权限申请框架 注解方法不能为 private
+        https://github.com/permissions-dispatcher/PermissionsDispatcher
+
+    加载框：    https://github.com/ybq/Android-SpinKit
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent" />
+
+         好看一点：Wave(这里用)、CubeGrid
+
+    RotatingPlane、DoubleBounce、Wave、WanderingCubes、Pulse、ChasingDots、ThreeBounce、Circle、CubeGrid、FadingCircle、FoldingCube、RotatingCircle
+
+
+    BaseQuickAdapter:   https://github.com/CymChad/BaseRecyclerViewAdapterHelper/blob/master/readme/1-BaseQuickAdapter.md
+
+
+    天气Api修改为 WebApi ：   https://dev.qweather.com/docs/api/
  */
 
 

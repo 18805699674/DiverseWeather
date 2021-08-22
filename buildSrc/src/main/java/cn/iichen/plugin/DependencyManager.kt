@@ -32,7 +32,19 @@ object Versions {
     const val dialog = "3.3.0"
     const val mmkv = "1.2.10"
     const val smartSwipe = "1.0.8"
+    const val permission = "4.9.1"
+    const val loading = "1.4.0"
+    const val recycle = "3.0.4"
 }
+
+object BaseRecycle{
+   const val core = "com.github.CymChad:BaseRecyclerViewAdapterHelper:${Versions.recycle}"
+}
+
+object Loading{
+    const val core = "com.github.ybq:Android-SpinKit:${Versions.loading}"
+}
+
 object SmartSwipe{
     const val core =  "com.billy.android:smart-swipe:${Versions.smartSwipe}"
     //android x环境下兼容NestedScrolling
@@ -51,6 +63,11 @@ object Dialog{
 //    const val datatime =  "com.afollestad.material-dialogs:datetime:${Versions.dialog}"
     const val bottomSheets =  "com.afollestad.material-dialogs:bottomsheets:${Versions.dialog}"
     const val lifecycle =  "com.afollestad.material-dialogs:lifecycle:${Versions.dialog}"
+}
+
+object Permission{
+    const val core = "com.github.permissions-dispatcher:permissionsdispatcher:${Versions.permission}"
+    const val compiler = "com.github.permissions-dispatcher:permissionsdispatcher-processor:${Versions.permission}"
 }
 
 object AndroidX {

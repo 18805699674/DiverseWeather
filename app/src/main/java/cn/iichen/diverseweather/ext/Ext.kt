@@ -1,21 +1,18 @@
-package cn.iichen.diverseweather.ui.fragment
+package cn.iichen.diverseweather.ext
 
-import android.content.Context
-import cn.iichen.diverseweather.R
-import cn.iichen.diverseweather.base.BaseFragment
-import timber.log.Timber
+import com.blankj.utilcode.util.ConvertUtils
 
 /**
  *
  * @ProjectName:    DiverseWeather
- * @Package:        cn.iichen.diverseweather.data.db.entity
- * @ClassName:      placeHodler
+ * @Package:        cn.iichen.diverseweather.ext
+ * @ClassName:      Ext
  * @Description:     java类作用描述
  * @Author:         作者名 qsdiao
- * @CreateDate:     2021/8/19 15:57
+ * @CreateDate:     2021/8/21 18:15
  * @UpdateUser:     更新者：qsdiao
- * @UpdateDate:     2021/8/19 15:57
- * @UpdateRemark:   更新说明：底部导航Tab页  生活指数以及空气质量等
+ * @UpdateDate:     2021/8/21 18:15
+ * @UpdateRemark:   更新说明：Fuck code, go to hell, serious people who maintain it：
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
 ┏┛┻━━━┛┻┓
@@ -37,12 +34,25 @@ import timber.log.Timber
  */
 
 
-class LifeFragment : BaseFragment() {
-    override fun initLayout(): Int = R.layout.tab_frag_life
+object Ext {
+//    -----------------------------MMKV的key-------------------------------
+    // 经度
+    const val LONGITUDE:String = "longitude"
+    // 纬度
+    const val LATITUDE:String = "latitude"
 
-    override fun initData(context: Context?) {
-        Timber.d("LifeFragment")
-    }
+
+
 }
+
+//    -----------------------------属性扩展-----------------------------------------
+
+
+
+
+
+
+
+
 
 
