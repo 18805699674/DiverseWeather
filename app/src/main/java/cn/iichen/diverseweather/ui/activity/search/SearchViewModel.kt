@@ -141,11 +141,11 @@ class SearchViewModel @ViewModelInject constructor(): ViewModel() {
 
             override fun onSuccess(p0: GeoBean?) {
                 p0?.run {
-                    if("200" == code.code){// 请求成功且有数据
+                    if(Ext.SUCCESS == code.code){// 请求成功且有数据
                         _mLoading.postValue(MultiStateView.ViewState.CONTENT)
                         _locationBeanList.postValue(locationBean)
                     }else{
-                        if("204" == code.code)
+                        if(Ext.EMPTY == code.code)
                             _mLoading.postValue(MultiStateView.ViewState.EMPTY)
                         else{
                             _mLoading.postValue(MultiStateView.ViewState.ERROR)

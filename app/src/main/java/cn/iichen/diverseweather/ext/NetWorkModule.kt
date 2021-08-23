@@ -4,8 +4,8 @@ import cn.iichen.diverseweather.data.remote.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
+import dagger.hilt.android.components.ApplicationComponent
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -43,12 +43,12 @@ import javax.inject.Singleton
 
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ApplicationComponent::class)
 object NetWorkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+        return OkHttpClient.Builder().addInterceptor(CommonParamsInterceptor())
             .build()
     }
 
@@ -57,7 +57,7 @@ object NetWorkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://devapi.qweather.com/v7")
+            .baseUrl("https://devapi.qweather.com/v7/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -68,7 +68,16 @@ object NetWorkModule {
         return retrofit.create(Api::class.java)
     }
 }
-
+class CommonParamsInterceptor : Interceptor{
+    override fun intercept(chain: Interceptor.Chain): Response {
+        var request = chain.request()
+        val modifiedUrl = request.url.newBuilder()
+            .addQueryParameter("key","c869e831072e464db165953498b1a84f")
+            .build();
+        request = request.newBuilder().url(modifiedUrl).build()
+        return chain.proceed(request)
+    }
+}
 
 
 

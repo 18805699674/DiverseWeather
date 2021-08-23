@@ -1,30 +1,25 @@
-package cn.iichen.diverseweather.data.remote
+package cn.iichen.diverseweather.data.repository
 
-import android.content.Context
-import cn.iichen.diverseweather.data.entity.NowBaseBean
 import cn.iichen.diverseweather.data.entity.WeatherNowBean
-import com.blankj.utilcode.util.LogUtils
-import com.qweather.sdk.bean.base.Lang
-import com.qweather.sdk.bean.base.Range
-import com.qweather.sdk.bean.geo.GeoBean
-import com.qweather.sdk.view.QWeather
+import cn.iichen.diverseweather.data.remote.Api
+import cn.iichen.diverseweather.data.remote.ApiResult
+import cn.iichen.diverseweather.ext.Ext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import org.intellij.lang.annotations.Flow
-import retrofit2.http.GET
-import retrofit2.http.Query
+import java.lang.Exception
 
 /**
  *
  * @ProjectName:    DiverseWeather
- * @Package:        cn.iichen.diverseweather.data.remote
- * @ClassName:      Api
+ * @Package:        cn.iichen.diverseweather.data.repository
+ * @ClassName:      RepositoryImpl
  * @Description:     java类作用描述
  * @Author:         作者名 qsdiao
- * @CreateDate:     2021/8/22 18:24
+ * @CreateDate:     2021/8/23 21:22
  * @UpdateUser:     更新者：qsdiao
- * @UpdateDate:     2021/8/22 18:24
+ * @UpdateDate:     2021/8/23 21:22
  * @UpdateRemark:   更新说明：Fuck code, go to hell, serious people who maintain it：
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
@@ -47,14 +42,23 @@ import retrofit2.http.Query
  */
 
 
-interface Api {
-    //    https://devapi.qweather.com/v7/weather/now  实时天气
-    @GET("weather/now")
-    suspend fun fetchWeatherNow(
-        @Query("location") location:String,
-        @Query("key") key:String = "c869e831072e464db165953498b1a84f"
-    ) : WeatherNowBean
+class RepositoryImpl(
+    val api: Api,
+) : Repository{
+
+    override suspend fun fetchWeatherNow(location: String): Flow<ApiResult<WeatherNowBean>> {
+        return flow {
+            try {
+                val weatherNowBean = api.fetchWeatherNow(location)
+                emit(ApiResult.Success(weatherNowBean))
+            }catch (e:Exception){
+                emit(ApiResult.Failure(e.cause))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }
+
+
 
 
 

@@ -29,6 +29,7 @@
 
     <!--    全面屏 resizeableActivity-->
     <application
+        android:usesCleartextTraffic="true"
         android:resizeableActivity="true"
         android:name=".App"
         android:allowBackup="true"

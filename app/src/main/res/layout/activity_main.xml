@@ -17,7 +17,12 @@
 
         <com.google.android.material.tabs.TabLayout
             app:layout_constraintBottom_toBottomOf="parent"
+            app:tabIndicatorHeight="0dp"
+            app:tabSelectedTextColor="@color/colorSecondary"
+            app:tabTextColor="@android:color/background_dark"
             android:layout_width="match_parent"
+            app:tabBackground="@android:color/transparent"
+            app:tabRippleColor="@android:color/transparent"
             android:id="@+id/tabLay"
             android:layout_height="wrap_content"/>
 

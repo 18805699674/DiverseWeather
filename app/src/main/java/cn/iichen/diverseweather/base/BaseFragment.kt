@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import cn.iichen.diverseweather.R
+import com.gyf.immersionbar.ktx.immersionBar
 
 /**
  *
@@ -52,8 +54,13 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView: View = inflater.inflate(initLayout(),container,false)
-        initView(rootView)
+        immersionBar {
+            statusBarColor(R.color.colorPrimary)
+            // 上面的文本颜色
+            statusBarDarkFont(true)
+            navigationBarColor(R.color.colorPrimary)
+        }
+        val rootView: View = initView(inflater)
         initData(context)
         return rootView
     }
@@ -66,15 +73,9 @@ abstract class BaseFragment : Fragment() {
 
     /**
      * 初始化布局
-     * @param rootView View
      */
-    open fun initView(rootView: View){}
+    abstract fun initView(inflate: LayoutInflater): View
 
-    /**
-     * 设置布局文件
-     * @return Int
-     */
-    abstract fun initLayout(): Int
 }
 
 

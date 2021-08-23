@@ -1,9 +1,9 @@
-package cn.iichen.diverseweather.data.net
+package cn.iichen.diverseweather.data.db
 
 /**
  *
  * @ProjectName:    DiverseWeather
- * @Package:        cn.iichen.diverseweather.data.db.entity
+ * @Package:        cn.iichen.diverseweather.data.entity
  * @ClassName:      placeHodler
  * @Description:     java类作用描述
  * @Author:         作者名 qsdiao

@@ -1,10 +1,7 @@
 package cn.iichen.diverseweather.ui.activity.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.KeyEvent
 import cn.iichen.diverseweather.R
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import cn.iichen.diverseweather.base.BaseActivity
@@ -12,20 +9,23 @@ import cn.iichen.diverseweather.databinding.ActivityMainBinding
 import cn.iichen.diverseweather.ui.fragment.LifeFragment
 import cn.iichen.diverseweather.ui.fragment.MoreFragment
 import cn.iichen.diverseweather.ui.fragment.WarnFragment
-import cn.iichen.diverseweather.ui.fragment.WeatherFragment
+import cn.iichen.diverseweather.ui.fragment.Weather.WeatherFragment
 import com.blankj.utilcode.util.ToastUtils
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.gyf.immersionbar.ktx.immersionBar
-import com.loc.bi
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlin.system.exitProcess
 
-
+@FlowPreview
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
     lateinit var binding:ActivityMainBinding
     lateinit var adapter: Adapter
     private lateinit var tabs: MutableList<String>
     private lateinit var fragmens: MutableList<Fragment>
+    private lateinit var icons: MutableList<Int>
 
 
     override fun initView() {
@@ -34,17 +34,21 @@ class MainActivity : BaseActivity() {
 
         tabs = mutableListOf<String>(getString(R.string.weather),getString(R.string.life),getString(R.string.warn),getString(R.string.more))
         fragmens = mutableListOf(WeatherFragment(),LifeFragment(),WarnFragment(),MoreFragment())
+        icons = mutableListOf(R.mipmap.weather,R.mipmap.life,R.mipmap.warn,R.mipmap.more)
 
         adapter = Adapter(this,fragmens)
 
         binding.apply {
             viewPager.adapter = adapter
+//            viewPager.currentItem = 2
         }
 
         TabLayoutMediator(binding.tabLay,binding.viewPager
         ) { tab, position ->
             tab.text = tabs[position]
+            tab.icon = getDrawable(icons[position])
         }.attach()
+
 
     }
 

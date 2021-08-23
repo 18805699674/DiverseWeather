@@ -1,23 +1,20 @@
-package cn.iichen.diverseweather.ui.fragment
+package cn.iichen.diverseweather.data.repository
 
-import android.content.Context
-import android.view.View
-import cn.iichen.diverseweather.R
-import cn.iichen.diverseweather.base.BaseFragment
-import com.gyf.immersionbar.ktx.immersionBar
-import timber.log.Timber
+import cn.iichen.diverseweather.data.entity.WeatherNowBean
+import cn.iichen.diverseweather.data.remote.ApiResult
+import kotlinx.coroutines.flow.Flow
 
 /**
  *
  * @ProjectName:    DiverseWeather
- * @Package:        cn.iichen.diverseweather.data.db.entity
+ * @Package:        cn.iichen.diverseweather.data.entity
  * @ClassName:      placeHodler
  * @Description:     java类作用描述
  * @Author:         作者名 qsdiao
  * @CreateDate:     2021/8/19 15:57
  * @UpdateUser:     更新者：qsdiao
  * @UpdateDate:     2021/8/19 15:57
- * @UpdateRemark:   更新说明：底部导航Tab页  基本天气页
+ * @UpdateRemark:   更新说明：Fuck code, go to hell, serious people who maintain it：
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
 ┏┛┻━━━┛┻┓
@@ -39,19 +36,29 @@ import timber.log.Timber
  */
 
 
-class WeatherFragment : BaseFragment() {
-
-    override fun initLayout(): Int = R.layout.tab_frag_weather
-
-    override fun initView(rootView: View) {
-        super.initView(rootView)
-        immersionBar {
-        }
-    }
-
-    override fun initData(context: Context?) {
-        Timber.d("WeatherFragment")
-    }
+interface Repository {
+    suspend fun fetchWeatherNow(location:String) : Flow<ApiResult<WeatherNowBean>>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
