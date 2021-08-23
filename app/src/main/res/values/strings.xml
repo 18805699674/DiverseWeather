@@ -8,4 +8,13 @@
     <string name="cancel">取消</string>
     <string name="hotCity">热门城市</string>
     <string name="default_city">北京</string>
+    <string name="location_fail">定位失败</string>
+    <string name="locationing">定位中</string>
+    <string name="location_success">定位成功</string>
+    <string name="location_tip">请定位或选择一个城市才能查看天气哦！</string>
+    <string name="agin_exit">再按一次退出应用</string>
+    <string name="weather">天气</string>
+    <string name="life">生活</string>
+    <string name="warn">预警</string>
+    <string name="more">更多</string>
 </resources>

@@ -10,7 +10,9 @@ import com.blankj.utilcode.util.LogUtils
 import java.security.AccessControlContext
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import cn.iichen.diverseweather.R
 import cn.iichen.diverseweather.data.remote.ApiResult
+import cn.iichen.diverseweather.ext.Ext
 import cn.iichen.diverseweather.utils.MultiStateView
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -20,6 +22,7 @@ import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.base.Range
 import com.qweather.sdk.bean.geo.GeoBean
 import com.qweather.sdk.view.QWeather
+import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -57,8 +60,9 @@ import kotlinx.coroutines.flow.*
 @ExperimentalCoroutinesApi
 @FlowPreview
 class SearchViewModel @ViewModelInject constructor(): ViewModel() {
-    var district = ObservableField<String>()
-
+    // 定位状态
+    private val _locationState = MutableLiveData<Boolean>()
+    val locationState : LiveData<Boolean> = _locationState
     //声明AMapLocationClient类对象
     lateinit var mLocationClient: AMapLocationClient
     lateinit var mLocationOption: AMapLocationClientOption
@@ -74,16 +78,20 @@ class SearchViewModel @ViewModelInject constructor(): ViewModel() {
                 if (it.errorCode == 0) {
                     //可在其中解析amapLocation获取相应内容。
                     LogUtils.d(it.address)
+                    ToastUtils.showShort(R.string.location_success)
                     // 对应的区
-                    district.set(it.district)
-//                    val kv = MMKV.defaultMMKV()
-//                    kv.encode(Ext.LONGITUDE,it.longitude)
-//                    kv.encode(Ext.LATITUDE,it.latitude)
+                    val kv = MMKV.defaultMMKV()
+                    kv.encode(Ext.LONGITUDE,it.longitude)
+                    kv.encode(Ext.LATITUDE,it.latitude)
+                    kv.encode(Ext.DISTRICK,it.district)
+                    _locationState.postValue(true)
                 }else {
                     LogUtils.e("location Error, ErrCode:"
                             + it.errorCode + ", errInfo:"
                             + it.errorInfo
-                    );
+                    )
+                    ToastUtils.showShort(it.errorInfo)
+                    _locationState.postValue(false)
                 }
             }
 
@@ -111,7 +119,7 @@ class SearchViewModel @ViewModelInject constructor(): ViewModel() {
     }
 
 
-//  获取热门城市
+//  获取热门城市 （使用SDK模式）
     private val _mLoading = MutableLiveData<MultiStateView.ViewState>()
     val mLoading : LiveData<MultiStateView.ViewState> = _mLoading
     private val _locationBeanList = MutableLiveData<List<GeoBean.LocationBean>>()

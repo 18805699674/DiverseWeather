@@ -1,17 +1,21 @@
-package cn.iichen.diverseweather.ext
+package cn.iichen.diverseweather.ui.activity.main
 
-import com.blankj.utilcode.util.ConvertUtils
+import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.loc.r
 
 /**
  *
  * @ProjectName:    DiverseWeather
- * @Package:        cn.iichen.diverseweather.ext
- * @ClassName:      Ext
+ * @Package:        cn.iichen.diverseweather.ui.activity.main
+ * @ClassName:      adapter
  * @Description:     java类作用描述
  * @Author:         作者名 qsdiao
- * @CreateDate:     2021/8/21 18:15
+ * @CreateDate:     2021/8/23 17:34
  * @UpdateUser:     更新者：qsdiao
- * @UpdateDate:     2021/8/21 18:15
+ * @UpdateDate:     2021/8/23 17:34
  * @UpdateRemark:   更新说明：Fuck code, go to hell, serious people who maintain it：
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
@@ -34,22 +38,12 @@ import com.blankj.utilcode.util.ConvertUtils
  */
 
 
-object Ext {
-//    -----------------------------MMKV的key-------------------------------
-    // 经度
-    const val LONGITUDE:String = "longitude"
-    // 纬度
-    const val LATITUDE:String = "latitude"
-    // 区 如：西湖区
-    const val DISTRICK:String = "district"
+class Adapter(@NonNull fragmentActivity:FragmentActivity, private val fragments:MutableList<Fragment>) : FragmentStateAdapter(fragmentActivity) {
 
+    override fun getItemCount(): Int = fragments.size
 
-
+    override fun createFragment(position: Int): Fragment = fragments[position]
 }
-
-//    -----------------------------属性扩展-----------------------------------------
-
-
 
 
 

@@ -12,6 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
         android:layout_height="match_parent">
 
         <!--    后续再进行自定义               app:contentInsetStart="0dp"

@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:elevation="0dp"
-        android:background="@color/colorPrimary"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.main.MainActivity">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@mipmap/back"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/desc_back" />
 
-        <TextView
-            style="@style/ToolbarTitle"
-            android:layout_width="wrap_content"
-            android:text="@string/location"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/tabLay"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:id="@+id/tabLay"
             android:layout_height="wrap_content"/>
-    </androidx.appcompat.widget.Toolbar>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

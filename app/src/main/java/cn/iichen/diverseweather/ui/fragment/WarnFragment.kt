@@ -1,10 +1,8 @@
 package cn.iichen.diverseweather.ui.fragment
 
 import android.content.Context
-import android.view.View
 import cn.iichen.diverseweather.R
 import cn.iichen.diverseweather.base.BaseFragment
-import com.gyf.immersionbar.ktx.immersionBar
 import timber.log.Timber
 
 /**
@@ -17,7 +15,7 @@ import timber.log.Timber
  * @CreateDate:     2021/8/19 15:57
  * @UpdateUser:     更新者：qsdiao
  * @UpdateDate:     2021/8/19 15:57
- * @UpdateRemark:   更新说明：底部导航Tab页  基本天气页
+ * @UpdateRemark:   更新说明：底部导航Tab页  灾害预警
  * @Version:        更新说明: 1.0
 ┏┓　　　┏┓
 ┏┛┻━━━┛┻┓
@@ -39,18 +37,11 @@ import timber.log.Timber
  */
 
 
-class WeatherFragment : BaseFragment() {
-
-    override fun initLayout(): Int = R.layout.tab_frag_weather
-
-    override fun initView(rootView: View) {
-        super.initView(rootView)
-        immersionBar {
-        }
-    }
+class WarnFragment : BaseFragment() {
+    override fun initLayout(): Int = R.layout.tab_frag_warn
 
     override fun initData(context: Context?) {
-        Timber.d("WeatherFragment")
+        Timber.d("WarnFragment")
     }
 }
 

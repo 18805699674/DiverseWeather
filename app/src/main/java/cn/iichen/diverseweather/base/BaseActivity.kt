@@ -1,21 +1,12 @@
 package cn.iichen.diverseweather.base
 
 import android.os.Bundle
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleObserver
-import com.afollestad.materialdialogs.MaterialDialog
-import com.blankj.utilcode.util.SnackbarUtils
-import com.blankj.utilcode.util.ToastUtils
-import permissions.dispatcher.RuntimePermissions
-import cn.iichen.diverseweather.ui.activity.MainActivity
+import cn.iichen.diverseweather.ui.activity.main.MainActivity
 
-import android.app.Activity
 import cn.iichen.diverseweather.R
 
 import com.billy.android.swipe.SmartSwipeBack
-import com.billy.android.swipe.SmartSwipeBack.ActivitySwipeBackFilter
-import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
 
 
@@ -51,7 +42,6 @@ import com.gyf.immersionbar.ktx.immersionBar
  */
 
 abstract class BaseActivity : AppCompatActivity(){
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(getLayRes())

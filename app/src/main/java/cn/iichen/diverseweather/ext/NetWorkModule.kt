@@ -57,7 +57,7 @@ object NetWorkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://pokeapi.co/api/v2/")
+            .baseUrl("https://devapi.qweather.com/v7")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

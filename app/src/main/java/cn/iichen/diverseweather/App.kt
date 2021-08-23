@@ -3,6 +3,7 @@ package cn.iichen.diverseweather
 import android.app.Application
 import android.content.Context
 import android.os.StrictMode
+import com.blankj.utilcode.util.KeyboardUtils
 import com.qweather.sdk.view.HeConfig
 import com.tencent.mmkv.MMKV
 import dagger.hilt.android.HiltAndroidApp

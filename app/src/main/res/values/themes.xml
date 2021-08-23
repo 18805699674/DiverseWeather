@@ -10,4 +10,31 @@
         <item name="colorSecondaryVariant">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/black</item>
     </style>
+
+
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+
+        <!--windowTranslucentNavigation这个属性设置成true，则navigationBarColor设置会失效-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--windowTranslucentNavigation这个属性设置成true，则navigationBarColor设置会失效-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/screen</item>
+
+
+<!--        <item name="android:windowDisablePreview">true</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="android:fullBackupOnly">true</item>-->
+<!--        <item name="android:screenOrientation">portrait</item>-->
+<!--        <item name="android:windowSoftInputMode">stateHidden</item>-->
+<!--        <item name="android:configChanges">orientation|keyboardHidden|screenSize</item>-->
+    </style>
 </resources>

@@ -55,7 +55,7 @@ abstract class BaseFragment : Fragment() {
         val rootView: View = inflater.inflate(initLayout(),container,false)
         initView(rootView)
         initData(context)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return rootView
     }
 
     /**

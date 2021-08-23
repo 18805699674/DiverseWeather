@@ -1,24 +1,27 @@
 package cn.iichen.diverseweather.ui.activity.search
 
 import android.Manifest
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import cn.iichen.diverseweather.R
 import cn.iichen.diverseweather.base.BaseActivity
 import cn.iichen.diverseweather.databinding.ActivitySearchBinding
+import cn.iichen.diverseweather.ext.Ext
+import cn.iichen.diverseweather.ui.activity.main.MainActivity
 import cn.iichen.diverseweather.utils.MultiStateView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.blankj.utilcode.util.ToastUtils
 import permissions.dispatcher.*
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.LogUtils
-import com.gyf.immersionbar.ImmersionBar
+import com.blankj.utilcode.util.ClickUtils
+import com.blankj.utilcode.util.ConvertUtils.dp2px
 import com.gyf.immersionbar.ktx.immersionBar
 import com.qweather.sdk.bean.geo.GeoBean
+import com.tencent.mmkv.MMKV
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import org.jetbrains.anko.startActivity
 
 
 /**
@@ -57,8 +60,8 @@ import kotlinx.coroutines.FlowPreview
 @FlowPreview
 @RuntimePermissions
 class SearchActivity : BaseActivity(){
-
     private lateinit var binding : ActivitySearchBinding
+
     private val viewmodel : SearchViewModel by viewModels()
     lateinit var adapter:Adapter
 
@@ -69,7 +72,9 @@ class SearchActivity : BaseActivity(){
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_search)
         // 初始化定位信息
-        viewmodel.initLocationParams(this)
+        viewmodel.apply {
+            initLocationParams(this@SearchActivity)
+        }
 
         immersionBar{
             titleBar(binding.toolbar)
@@ -78,8 +83,17 @@ class SearchActivity : BaseActivity(){
         binding.apply {
             seachViewModel = viewmodel
             recycle.adapter = adapter
+            recycle.addItemDecoration(ItemDecoration(dp2px(20F)))
             adapter.setOnItemClickListener { adapter, view, position ->
-                ToastUtils.showShort("$position")
+                val bean:GeoBean.LocationBean = adapter.data[position] as GeoBean.LocationBean
+                // 存储城市信息
+                val kv = MMKV.defaultMMKV()
+                kv.encode(Ext.LONGITUDE,bean.lon)
+                kv.encode(Ext.LATITUDE,bean.lat)
+                kv.encode(Ext.DISTRICK,bean.name)
+                // 跳转到首页
+                this@SearchActivity.finish()
+                startActivity<MainActivity>()
             }
             adapter.animationEnable = true
             // 无网络和加载失败网络重试
@@ -95,29 +109,52 @@ class SearchActivity : BaseActivity(){
                     viewmodel.getGeoTopCity(this@SearchActivity)
                 }
             }
+            // 取消按钮时间处理
+            ClickUtils.applyGlobalDebouncing(cancel) {
+                val kv = MMKV.defaultMMKV()
+                if (kv.decodeDouble(Ext.DISTRICK, -1.0) == -1.0) {// 未定位
+                    ToastUtils.showShort(R.string.location_tip)
+                    doRequestForegroundLocationPermissionWithPermissionCheck()
+                } else {
+                    this@SearchActivity.finish()
+                }
+            }
         }
-
-        // 获取热门城市
-        viewmodel.getGeoTopCity(this)
-        viewmodel.mLoading.observe(this,{
-            binding.stateView.viewState = it
-        })
-        
-        viewmodel.locationBeanList.observe(this,{
-            adapter.setNewInstance(it.toMutableList())
-        })
     }
 
     override fun initData() {
         super.initData()
+        // 申请权限并开启定位
+        doRequestForegroundLocationPermissionWithPermissionCheck()
+        // 获取热门城市
+        viewmodel.apply {
+            // SDK内的接口回调内 不知道怎么直接emit.所以定一个Livedata进行刷新
+            getGeoTopCity(this@SearchActivity)
+            // 页面状态
+            mLoading.observe(this@SearchActivity,{
+                binding.stateView.viewState = it
+            })
+            // 热门城市
+            locationBeanList.observe(this@SearchActivity,{
+                adapter.setNewInstance(it.toMutableList())
+            })
+            // 是否定位成功 成功跳转到主页面，失败需要重新定位或手动选择一个地址
+            locationState.observe(this@SearchActivity,{
+                if(it){ //跳转到主页面
+                    this@SearchActivity.finish()
+                    startActivity<MainActivity>()
+                }else{  //失败需要重新定位或手动选择一个地址
 
-//        doRequestForegroundLocationPermissionWithPermissionCheck()
+                }
+            })
+        }
+
     }
 
     // 申请前台位置权限
     @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION)
     fun doRequestForegroundLocationPermission() {
-        ToastUtils.showShort("开始定位！")
+        ToastUtils.showShort(R.string.locationing)
         viewmodel.startLocation()
     }
     // 展示为什么需要权限
