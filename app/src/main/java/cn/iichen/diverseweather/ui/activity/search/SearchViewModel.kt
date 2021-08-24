@@ -120,41 +120,42 @@ class SearchViewModel @ViewModelInject constructor(): ViewModel() {
 
 
 //  获取热门城市 （使用SDK模式）
-    private val _mLoading = MutableLiveData<MultiStateView.ViewState>()
-    val mLoading : LiveData<MultiStateView.ViewState> = _mLoading
+    val mLoading = ObservableField<MultiStateView.ViewState>()
+
     private val _locationBeanList = MutableLiveData<List<GeoBean.LocationBean>>()
     val locationBeanList:LiveData<List<GeoBean.LocationBean>> = _locationBeanList
     fun getGeoTopCity(context: Context) {
-        _mLoading.postValue(MultiStateView.ViewState.LOADING)
+        mLoading.set(MultiStateView.ViewState.LOADING)
         if(!NetworkUtils.isAvailable()){
-            _mLoading.postValue(MultiStateView.ViewState.NONET)
+            mLoading.set(MultiStateView.ViewState.NONET)
             return
         }
+
         QWeather.getGeoTopCity(context, 20, Range.CN, Lang.ZH_HANS, object :
             QWeather.OnResultGeoListener {
-            override fun onError(p0: Throwable?) {
-                p0?.run {
-                    ToastUtils.showShort(message)
+                override fun onError(p0: Throwable?) {
+                    p0?.run {
+                        ToastUtils.showShort(message)
+                    }
+                    mLoading.set(MultiStateView.ViewState.ERROR)
                 }
-                _mLoading.postValue(MultiStateView.ViewState.ERROR)
-            }
 
-            override fun onSuccess(p0: GeoBean?) {
-                p0?.run {
-                    if(Ext.SUCCESS == code.code){// 请求成功且有数据
-                        _mLoading.postValue(MultiStateView.ViewState.CONTENT)
-                        _locationBeanList.postValue(locationBean)
-                    }else{
-                        if(Ext.EMPTY == code.code)
-                            _mLoading.postValue(MultiStateView.ViewState.EMPTY)
-                        else{
-                            _mLoading.postValue(MultiStateView.ViewState.ERROR)
-                            ToastUtils.showShort(code.txt)
+                override fun onSuccess(p0: GeoBean?) {
+                    p0?.run {
+                        if(Ext.SUCCESS == code.code){// 请求成功且有数据
+                            mLoading.set(MultiStateView.ViewState.CONTENT)
+                            _locationBeanList.postValue(locationBean)
+                        }else{
+                            if(Ext.EMPTY == code.code)
+                                mLoading.set(MultiStateView.ViewState.EMPTY)
+                            else{
+                                mLoading.set(MultiStateView.ViewState.ERROR)
+                                ToastUtils.showShort(code.txt)
+                            }
                         }
                     }
                 }
             }
-        }
         )
     }
 }

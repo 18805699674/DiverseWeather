@@ -63,52 +63,42 @@ class SearchActivity : BaseActivity(){
     private lateinit var binding : ActivitySearchBinding
 
     private val viewmodel : SearchViewModel by viewModels()
-    lateinit var adapter:Adapter
+    private val topCityAdapter: Adapter by lazy { Adapter(ArrayList()) }
 
     override fun initView() {
         super.initView()
-        adapter = Adapter(ArrayList<GeoBean.LocationBean>())
 
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_search)
-        // 初始化定位信息
-        viewmodel.apply {
-            initLocationParams(this@SearchActivity)
-        }
-
-        immersionBar{
-            titleBar(binding.toolbar)
-        }
 
         binding.apply {
             seachViewModel = viewmodel
-            recycle.adapter = adapter
-            recycle.addItemDecoration(ItemDecoration(dp2px(20F)))
-            adapter.setOnItemClickListener { adapter, view, position ->
-                val bean:GeoBean.LocationBean = adapter.data[position] as GeoBean.LocationBean
-                // 存储城市信息
-                val kv = MMKV.defaultMMKV()
-                kv.encode(Ext.LONGITUDE,bean.lon)
-                kv.encode(Ext.LATITUDE,bean.lat)
-                kv.encode(Ext.DISTRICK,bean.name)
-                // 跳转到首页
-                this@SearchActivity.finish()
-                startActivity<MainActivity>()
+            adapter = topCityAdapter
+            itemDecoration = ItemDecoration(dp2px(20F))
+
+            // 使用BindingAdapter与LiveData需要加入此行
+            lifecycleOwner = this@SearchActivity
+
+            topCityAdapter.apply {
+                animationEnable = true
+                setOnItemClickListener { adapter, _, position ->
+                    val bean: GeoBean.LocationBean = adapter.data[position] as GeoBean.LocationBean
+                    // 存储城市信息
+                    val kv = MMKV.defaultMMKV()
+                    kv.encode(Ext.LONGITUDE, bean.lon)
+                    kv.encode(Ext.LATITUDE, bean.lat)
+                    kv.encode(Ext.DISTRICK, bean.name)
+                    // 跳转到首页
+                    this@SearchActivity.finish()
+                    startActivity<MainActivity>()
+                }
             }
-            adapter.animationEnable = true
+
             // 无网络和加载失败网络重试
-            stateView.getView(MultiStateView.ViewState.NONET)?.run {
-                setOnClickListener {
-                    stateView.viewState = MultiStateView.ViewState.LOADING
-                    viewmodel.getGeoTopCity(this@SearchActivity)
-                }
+            stateView.retry {
+                viewmodel.getGeoTopCity(this@SearchActivity)
             }
-            stateView.getView(MultiStateView.ViewState.ERROR)?.run {
-                setOnClickListener {
-                    stateView.viewState = MultiStateView.ViewState.LOADING
-                    viewmodel.getGeoTopCity(this@SearchActivity)
-                }
-            }
+
             // 取消按钮时间处理
             ClickUtils.applyGlobalDebouncing(cancel) {
                 val kv = MMKV.defaultMMKV()
@@ -124,20 +114,14 @@ class SearchActivity : BaseActivity(){
 
     override fun initData() {
         super.initData()
-        // 申请权限并开启定位
-        doRequestForegroundLocationPermissionWithPermissionCheck()
         // 获取热门城市
         viewmodel.apply {
+            // 初始化定位信息
+            initLocationParams(this@SearchActivity)
+
             // SDK内的接口回调内 不知道怎么直接emit.所以定一个Livedata进行刷新
             getGeoTopCity(this@SearchActivity)
-            // 页面状态
-            mLoading.observe(this@SearchActivity,{
-                binding.stateView.viewState = it
-            })
-            // 热门城市
-            locationBeanList.observe(this@SearchActivity,{
-                adapter.setNewInstance(it.toMutableList())
-            })
+
             // 是否定位成功 成功跳转到主页面，失败需要重新定位或手动选择一个地址
             locationState.observe(this@SearchActivity,{
                 if(it){ //跳转到主页面
@@ -149,6 +133,8 @@ class SearchActivity : BaseActivity(){
             })
         }
 
+        // 申请权限并开启定位
+        doRequestForegroundLocationPermissionWithPermissionCheck()
     }
 
     // 申请前台位置权限

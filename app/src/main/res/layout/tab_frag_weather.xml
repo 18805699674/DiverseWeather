@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:layout_width="match_parent"
+
+    <data>
+        <variable
+            name="weatherViewModel"
+            type="cn.iichen.diverseweather.ui.fragment.weather.WeatherViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -12,26 +20,35 @@
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:text="title"
-                android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.Toolbar>
 
-        <cn.iichen.diverseweather.utils.MultiStateView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:id="@+id/stateView_Weather"
             android:layout_height="match_parent">
 
-            <Button
+            <cn.iichen.diverseweather.utils.MultiStateView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:text="@string/weather"
-                android:layout_height="wrap_content"/>
-        </cn.iichen.diverseweather.utils.MultiStateView>
+                android:id="@+id/stateView_Weather"
+                app:bindingViewState="@{weatherViewModel.mLoading}"
+                android:layout_height="match_parent">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:text="@{weatherViewModel.weatherNow.temp}"
+                            android:layout_height="wrap_content"/>
+                    </androidx.cardview.widget.CardView>
+                </androidx.core.widget.NestedScrollView>
+            </cn.iichen.diverseweather.utils.MultiStateView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>
 

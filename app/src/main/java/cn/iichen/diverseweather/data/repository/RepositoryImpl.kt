@@ -4,10 +4,12 @@ import cn.iichen.diverseweather.data.entity.WeatherNowBean
 import cn.iichen.diverseweather.data.remote.Api
 import cn.iichen.diverseweather.data.remote.ApiResult
 import cn.iichen.diverseweather.ext.Ext
+import com.qweather.sdk.bean.geo.GeoBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.lang.Exception
 
 /**
@@ -56,6 +58,11 @@ class RepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    override suspend fun fetchGeoTopCity(): List<GeoBean.LocationBean>  =
+        suspendCancellableCoroutine<List<GeoBean.LocationBean>> {
+
+        }
 }
 
 

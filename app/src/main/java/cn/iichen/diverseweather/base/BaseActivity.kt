@@ -57,6 +57,7 @@ abstract class BaseActivity : AppCompatActivity(){
             // 上面的文本颜色
             statusBarDarkFont(true)
             navigationBarColor(R.color.colorPrimary)
+            fitsSystemWindows(true)
         }
 
         initView()

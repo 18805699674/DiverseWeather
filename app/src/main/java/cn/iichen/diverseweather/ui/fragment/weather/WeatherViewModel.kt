@@ -1,6 +1,6 @@
-package cn.iichen.diverseweather.ui.fragment.Weather
+package cn.iichen.diverseweather.ui.fragment.weather
 
-import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import cn.iichen.diverseweather.data.remote.doFailure
@@ -11,13 +11,9 @@ import cn.iichen.diverseweather.utils.MultiStateView
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.qweather.sdk.bean.geo.GeoBean
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
+import com.qweather.sdk.bean.weather.WeatherNowBean
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 /**
  *
@@ -55,39 +51,39 @@ import kotlinx.coroutines.flow.onStart
 class WeatherViewModel @ViewModelInject constructor(
     private val repository: Repository
 ) : ViewModel() {
-    private val _mLoading = MutableLiveData<MultiStateView.ViewState>()
-    val mLoading : LiveData<MultiStateView.ViewState> = _mLoading
 
-    // 实时天气
-    fun fetchWeatherNow(location:String) = liveData{
+    val mLoading = ObservableField<MultiStateView.ViewState>()
+
+    // 并发请求多个接口的数据
+    fun fetchWeather(location:String){
         if(!NetworkUtils.isAvailable()){
-            _mLoading.postValue(MultiStateView.ViewState.NONET)
-            return@liveData
+            mLoading.set(MultiStateView.ViewState.NONET)
+            return
         }
-        repository.fetchWeatherNow(location)
-            .onStart {
-                _mLoading.postValue(MultiStateView.ViewState.LOADING)
+        viewModelScope.launch(Dispatchers.IO) {
+            mLoading.set(MultiStateView.ViewState.LOADING)
+            val res = async {
+                fetchWeatherNow(location)
             }
-            .catch {
-                _mLoading.postValue(MultiStateView.ViewState.ERROR)
-            }
+            LogUtils.d()
+            mLoading.set(MultiStateView.ViewState.CONTENT)
+        }
+    }
+    // 实时天气
+    private val _weatherNow = MutableLiveData<WeatherNowBean.NowBaseBean>()
+    val weatherNow: LiveData<WeatherNowBean.NowBaseBean> = _weatherNow
+    private suspend fun fetchWeatherNow(location:String) {
+        return repository.fetchWeatherNow(location)
             .collectLatest {
                 it.doFailure { throwable ->
                     ToastUtils.showShort(throwable?.message ?: "failure")
-                    _mLoading.postValue(MultiStateView.ViewState.ERROR)
                 }
                 it.doSuccess { value ->
                     if(value.code == Ext.SUCCESS){
-                        emit(value.now)
-                        _mLoading.postValue(MultiStateView.ViewState.CONTENT)
-                    }
-                    else if(value.code == Ext.EMPTY)
-                        _mLoading.postValue(MultiStateView.ViewState.EMPTY)
-                    else{
-                        _mLoading.postValue(MultiStateView.ViewState.ERROR)
+                        _weatherNow.postValue(value.now!!)
+                    }else{
                         LogUtils.d(value.code)
                     }
-
                 }
             }
     }

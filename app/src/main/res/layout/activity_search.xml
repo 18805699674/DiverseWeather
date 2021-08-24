@@ -7,6 +7,14 @@
         <variable
             name="seachViewModel"
             type="cn.iichen.diverseweather.ui.activity.search.SearchViewModel" />
+
+        <variable
+            name="adapter"
+            type="cn.iichen.diverseweather.ui.activity.search.Adapter" />
+
+        <variable
+            name="itemDecoration"
+            type="cn.iichen.diverseweather.ui.activity.search.ItemDecoration" />
     </data>
 
 
@@ -32,15 +40,15 @@
                     android:id="@+id/search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_8"
+                    android:layout_marginRight="@dimen/marginRight"
+                    android:layout_toLeftOf="@+id/cancel"
                     android:background="@drawable/radis_search_edit"
                     android:hint="@string/location"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
+                    android:padding="@dimen/padding_8"
                     android:singleLine="true"
-                    android:textSize="@dimen/sp_14"
-                    android:layout_marginRight="@dimen/marginRight"
-                    android:layout_toLeftOf="@+id/cancel" />
+                    android:textSize="@dimen/sp_14" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_alignParentRight="true"
@@ -70,12 +78,16 @@
             android:layout_below="@+id/hotCityText"
             android:layout_width="match_parent"
             android:id="@+id/stateView"
+            app:bindingViewState="@{seachViewModel.mLoading}"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:padding="@dimen/dp_20"
                 android:id="@+id/recycle"
                 android:layout_width="match_parent"
+                app:bindAdapter="@{adapter}"
+                app:bindData="@{seachViewModel.locationBeanList}"
+                app:bindItemDecoration="@{itemDecoration}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
                 android:layout_height="match_parent"/>

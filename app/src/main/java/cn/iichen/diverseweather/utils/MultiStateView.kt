@@ -153,6 +153,17 @@ class MultiStateView @JvmOverloads constructor(context: Context,
         if (switchToState) viewState = state
     }
 
+    fun retry(call:()->Unit){
+        netView?.setOnClickListener {
+            viewState = ViewState.LOADING
+            call()
+        }
+        errorView?.setOnClickListener {
+            viewState = ViewState.LOADING
+            call()
+        }
+    }
+
     /**
      * Sets the [View] for the given [com.kennyc.view.MultiStateView.ViewState]
      *

@@ -9,7 +9,7 @@ import cn.iichen.diverseweather.databinding.ActivityMainBinding
 import cn.iichen.diverseweather.ui.fragment.LifeFragment
 import cn.iichen.diverseweather.ui.fragment.MoreFragment
 import cn.iichen.diverseweather.ui.fragment.WarnFragment
-import cn.iichen.diverseweather.ui.fragment.Weather.WeatherFragment
+import cn.iichen.diverseweather.ui.fragment.weather.WeatherFragment
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +30,7 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         super.initView()
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
         tabs = mutableListOf<String>(getString(R.string.weather),getString(R.string.life),getString(R.string.warn),getString(R.string.more))
@@ -51,8 +52,6 @@ class MainActivity : BaseActivity() {
 
 
     }
-
-
 
 
 
