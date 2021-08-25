@@ -11,8 +11,11 @@ import cn.iichen.diverseweather.ui.activity.search.Adapter
 import cn.iichen.diverseweather.ui.activity.search.ItemDecoration
 import cn.iichen.diverseweather.utils.MultiStateView
 import coil.load
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ResourceUtils
 import com.qweather.sdk.bean.geo.GeoBean
 import timber.log.Timber
+import java.lang.Exception
 
 /**
  *
@@ -53,6 +56,18 @@ fun bindingAvator(imageView: ImageView, url: String) {
         placeholder(R.mipmap.logo)
     }
 }
+// 根据天气代码设置对应的天气Icon
+@BindingAdapter("bindingWeatherIcon")
+fun bindingWeatherIcon(imageView: ImageView, icon: String?) {
+   try{
+       icon?.apply {
+           val id = ResourceUtils.getMipmapIdByName("icon_$this")
+           imageView.setBackgroundResource(id)
+       }
+   }catch (e:Exception){
+       imageView.setBackgroundResource(R.mipmap.icon_100)
+    }
+}
 
 
 // 多状态
@@ -65,7 +80,9 @@ fun bindingViewState(stateView:MultiStateView,viewState: MultiStateView.ViewStat
 
 @BindingAdapter("bindRetry")
 fun bindingViewRetry(stateView: MultiStateView,call:()->Unit){
-    stateView.retry(call)
+    stateView.retry {
+        call()
+    }
 }
 
 // 点击跳转

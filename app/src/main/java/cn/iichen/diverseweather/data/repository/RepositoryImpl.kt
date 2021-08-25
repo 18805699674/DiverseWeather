@@ -6,6 +6,7 @@ import cn.iichen.diverseweather.data.remote.ApiResult
 import cn.iichen.diverseweather.ext.Ext
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.qweather.sdk.bean.MinutelyBean
 import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.base.Range
 import com.qweather.sdk.bean.geo.GeoBean
@@ -56,7 +57,7 @@ import kotlin.coroutines.resumeWithException
 class RepositoryImpl(
     val api: Api,
 ) : Repository{
-
+    // 实时天气
     override suspend fun fetchWeatherNow(location: String): Flow<ApiResult<WeatherNowBean>> {
         return flow {
             try {
@@ -68,6 +69,7 @@ class RepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
+    // 热门城市
     @ExperimentalCoroutinesApi
     override suspend fun fetchGeoTopCity(): ApiResult<List<GeoBean.LocationBean>> =
         suspendCancellableCoroutine {
@@ -93,6 +95,36 @@ class RepositoryImpl(
                             }
                         }
                     }
+                }
+            )
+        }
+
+    // 分钟降水
+    @ExperimentalCoroutinesApi
+    override suspend fun fetchMinuteLy(location: String): ApiResult<MinutelyBean> =
+        suspendCancellableCoroutine {
+            QWeather.getMinuteLy(context, location, object :
+                QWeather.OnResultMinutelyListener {
+                    override fun onError(p0: Throwable?) {
+                        p0?.run {
+                            it.resumeWithException(this)
+                        }
+                    }
+
+                    override fun onSuccess(p0: MinutelyBean?) {
+                    p0?.run {
+                        if (Ext.SUCCESS == code.code)// 请求成功且有数据
+                            it.resume(ApiResult.Success(this)) {
+                                LogUtils.d("数据回调被取消！")
+                            } else {
+                            if (Ext.EMPTY == code.code)
+                                it.resume(ApiResult.Failure(Throwable("请求的数据为空"))) { LogUtils.d("数据回调被取消！") }
+                            else {
+                                it.resume(ApiResult.Failure(Throwable(code.txt))) { LogUtils.d("数据回调被取消！") }
+                            }
+                        }
+                    }
+                }
                 }
             )
         }

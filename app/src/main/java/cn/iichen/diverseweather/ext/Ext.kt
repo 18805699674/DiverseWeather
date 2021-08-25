@@ -1,6 +1,8 @@
 package cn.iichen.diverseweather.ext
 
 import com.blankj.utilcode.util.ConvertUtils
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  *
@@ -57,6 +59,10 @@ object Ext {
     const val SUCCESS:String = "200"
     const val EMPTY:String = "204"
     const val ERROR:String = "999"
+}
+fun Date.getHourTime() : String{
+    val sbf = SimpleDateFormat("HH:mm")
+    return sbf.format(this);
 }
 
 

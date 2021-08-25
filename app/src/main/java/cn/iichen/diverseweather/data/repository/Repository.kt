@@ -2,6 +2,7 @@ package cn.iichen.diverseweather.data.repository
 
 import cn.iichen.diverseweather.data.entity.WeatherNowBean
 import cn.iichen.diverseweather.data.remote.ApiResult
+import com.qweather.sdk.bean.MinutelyBean
 import com.qweather.sdk.bean.geo.GeoBean
 import kotlinx.coroutines.flow.Flow
 
@@ -38,9 +39,14 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface Repository {
+    // 实时天气
     suspend fun fetchWeatherNow(location:String) : Flow<ApiResult<WeatherNowBean>>
 
+    // 热门城市
     suspend fun fetchGeoTopCity() : ApiResult<List<GeoBean.LocationBean>>
+
+    // 分钟降水
+    suspend fun fetchMinuteLy(location:String) : ApiResult<MinutelyBean>
 }
 
 

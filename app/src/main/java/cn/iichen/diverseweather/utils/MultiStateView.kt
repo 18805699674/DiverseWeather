@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import cn.iichen.diverseweather.R
+import com.blankj.utilcode.util.LogUtils
 
 //  直接通过设置          binding.stateView.viewState = MultiStateView.ViewState.LOADING 即可
 
@@ -155,11 +156,11 @@ class MultiStateView @JvmOverloads constructor(context: Context,
 
     fun retry(call:()->Unit){
         netView?.setOnClickListener {
-            viewState = ViewState.LOADING
+//            viewState = ViewState.LOADING
             call()
         }
         errorView?.setOnClickListener {
-            viewState = ViewState.LOADING
+//            viewState = ViewState.LOADING
             call()
         }
     }

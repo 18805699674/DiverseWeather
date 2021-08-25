@@ -1,8 +1,10 @@
 package cn.iichen.diverseweather.ui.fragment.weather
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import cn.iichen.diverseweather.R
 import cn.iichen.diverseweather.data.entity.NowBaseBean
 import cn.iichen.diverseweather.data.remote.doFailure
 import cn.iichen.diverseweather.data.remote.doSuccess
@@ -16,6 +18,7 @@ import com.qweather.sdk.bean.weather.WeatherNowBean
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import java.lang.Exception
 
 /**
  *
@@ -53,45 +56,59 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 class WeatherViewModel @ViewModelInject constructor(
     private val repository: Repository
 ) : ViewModel() {
-    val mLoading = ObservableField<MultiStateView.ViewState>()
     // 当前定位城市 区
     val districk = ObservableField<String>()
+    // 当前时间刷新使用
+    val nowTime = ObservableField<String>()
+
     // 记录当前的 经纬度
     lateinit var location:String
 
+
     // 实时天气 使用WebApi其余用SDK了 演示一下
     val weatherNow = ObservableField<NowBaseBean>()
-    fun fetchWeatherNow() {
-        if(!NetworkUtils.isAvailable()){
-            mLoading.set(MultiStateView.ViewState.NONET)
-            return
-        }
-        viewModelScope.launch{
-            repository.fetchWeatherNow(location)
-                .onStart {
-                    mLoading.set(MultiStateView.ViewState.LOADING)
+    fun fetchWeatherNow()  = liveData {
+        repository.fetchWeatherNow(location)
+            .collectLatest {
+                it.doFailure { throwable ->
+                    ToastUtils.showShort(throwable?.message ?: "failure")
+                    emit(false)
                 }
-                .catch {
-                    mLoading.set(MultiStateView.ViewState.ERROR)
-                }
-                .collectLatest {
-                    it.doFailure { throwable ->
-                        ToastUtils.showShort(throwable?.message ?: "failure")
-                        mLoading.set(MultiStateView.ViewState.ERROR)
+                it.doSuccess { value ->
+                    // 刷新UI
+                    emit(true)
+                    if(value.code == Ext.SUCCESS){
+                        // dataBinding视图绑定
+                        weatherNow.set(value.now)
                     }
-                    it.doSuccess { value ->
-                        if(value.code == Ext.SUCCESS){
-                            weatherNow.set(value.now)
-                            mLoading.set(MultiStateView.ViewState.CONTENT)
-                        }
-                        else if(value.code == Ext.EMPTY)
-                            mLoading.set(MultiStateView.ViewState.EMPTY)
-                        else{
-                            mLoading.set(MultiStateView.ViewState.ERROR)
-                            LogUtils.d(value.code)
-                        }
+                    else if(value.code == Ext.EMPTY)
+                        ToastUtils.showShort("无数据!")
+                    else{
+                        LogUtils.d(value.code)
                     }
                 }
+            }
+    }
+
+
+    // 分钟降水  暂时开发版 无权限
+    fun fetchMinuteLy() {
+        viewModelScope.launch {
+            try{
+                val data = repository.fetchMinuteLy(location)
+                data.doFailure {
+                    ToastUtils.showShort(it?.message ?: "failure")
+                }
+                data.doSuccess {
+                    LogUtils.d(it.summary)
+                    it.minutelyList.forEach {
+                        LogUtils.d("${it.precip}-${it.type}")
+                    }
+                }
+            }catch (e: Exception){
+                ToastUtils.showShort(e.message ?: "failure")
+                LogUtils.d(e.message ?: "failure")
+            }
         }
     }
 }
