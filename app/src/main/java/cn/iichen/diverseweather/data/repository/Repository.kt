@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     suspend fun fetchWeatherNow(location:String) : Flow<ApiResult<WeatherNowBean>>
 
-    suspend fun fetchGeoTopCity() : List<GeoBean.LocationBean>
+    suspend fun fetchGeoTopCity() : ApiResult<List<GeoBean.LocationBean>>
 }
 
 

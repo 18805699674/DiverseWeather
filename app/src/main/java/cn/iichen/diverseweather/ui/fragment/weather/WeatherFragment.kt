@@ -8,6 +8,7 @@ import cn.iichen.diverseweather.base.BaseFragment
 import cn.iichen.diverseweather.databinding.TabFragWeatherBinding
 import cn.iichen.diverseweather.ext.Ext
 import com.blankj.utilcode.util.LogUtils
+import com.loc.fe
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -49,14 +50,14 @@ class WeatherFragment : BaseFragment() {
     private lateinit var binding : TabFragWeatherBinding
     private val mViewModel: WeatherViewModel by activityViewModels()
 
-    private lateinit var location:String
 
     override fun initData(context: Context?) {
         val mmkv = MMKV.defaultMMKV()
-        location = "${mmkv.decodeDouble(Ext.LONGITUDE)},${mmkv.decodeDouble(Ext.LATITUDE)}";
 
         mViewModel.apply {
-            fetchWeather(location)
+            location = "${mmkv.decodeDouble(Ext.LONGITUDE)},${mmkv.decodeDouble(Ext.LATITUDE)}";
+            fetchWeatherNow()
+            districk.set( mmkv.decodeString(Ext.DISTRICK))
         }
     }
 
@@ -65,10 +66,6 @@ class WeatherFragment : BaseFragment() {
 
         binding.apply {
             weatherViewModel = mViewModel
-
-            stateViewWeather.retry {
-                mViewModel.fetchWeather(location)
-            }
 
             lifecycleOwner = this@WeatherFragment
         }

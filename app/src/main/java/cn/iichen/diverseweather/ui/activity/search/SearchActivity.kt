@@ -96,7 +96,7 @@ class SearchActivity : BaseActivity(){
 
             // 无网络和加载失败网络重试
             stateView.retry {
-                viewmodel.getGeoTopCity(this@SearchActivity)
+                viewmodel.getGeoTopCity()
             }
 
             // 取消按钮时间处理
@@ -120,7 +120,7 @@ class SearchActivity : BaseActivity(){
             initLocationParams(this@SearchActivity)
 
             // SDK内的接口回调内 不知道怎么直接emit.所以定一个Livedata进行刷新
-            getGeoTopCity(this@SearchActivity)
+            getGeoTopCity()
 
             // 是否定位成功 成功跳转到主页面，失败需要重新定位或手动选择一个地址
             locationState.observe(this@SearchActivity,{

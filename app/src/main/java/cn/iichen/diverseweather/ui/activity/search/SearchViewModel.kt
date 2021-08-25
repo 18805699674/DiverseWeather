@@ -12,6 +12,9 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import cn.iichen.diverseweather.R
 import cn.iichen.diverseweather.data.remote.ApiResult
+import cn.iichen.diverseweather.data.remote.doFailure
+import cn.iichen.diverseweather.data.remote.doSuccess
+import cn.iichen.diverseweather.data.repository.Repository
 import cn.iichen.diverseweather.ext.Ext
 import cn.iichen.diverseweather.utils.MultiStateView
 import com.blankj.utilcode.util.NetworkUtils
@@ -25,6 +28,7 @@ import com.qweather.sdk.view.QWeather
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.lang.Exception
 
 
 /**
@@ -59,7 +63,9 @@ import kotlinx.coroutines.flow.*
  */
 @ExperimentalCoroutinesApi
 @FlowPreview
-class SearchViewModel @ViewModelInject constructor(): ViewModel() {
+class SearchViewModel @ViewModelInject constructor(
+    private val repository: Repository
+): ViewModel() {
     // 定位状态
     private val _locationState = MutableLiveData<Boolean>()
     val locationState : LiveData<Boolean> = _locationState
@@ -124,39 +130,30 @@ class SearchViewModel @ViewModelInject constructor(): ViewModel() {
 
     private val _locationBeanList = MutableLiveData<List<GeoBean.LocationBean>>()
     val locationBeanList:LiveData<List<GeoBean.LocationBean>> = _locationBeanList
-    fun getGeoTopCity(context: Context) {
+    fun getGeoTopCity() {
         mLoading.set(MultiStateView.ViewState.LOADING)
         if(!NetworkUtils.isAvailable()){
             mLoading.set(MultiStateView.ViewState.NONET)
             return
         }
-
-        QWeather.getGeoTopCity(context, 20, Range.CN, Lang.ZH_HANS, object :
-            QWeather.OnResultGeoListener {
-                override fun onError(p0: Throwable?) {
-                    p0?.run {
-                        ToastUtils.showShort(message)
-                    }
+        viewModelScope.launch {
+            try{
+                val data = repository.fetchGeoTopCity()
+                data.doFailure {
                     mLoading.set(MultiStateView.ViewState.ERROR)
                 }
-
-                override fun onSuccess(p0: GeoBean?) {
-                    p0?.run {
-                        if(Ext.SUCCESS == code.code){// 请求成功且有数据
-                            mLoading.set(MultiStateView.ViewState.CONTENT)
-                            _locationBeanList.postValue(locationBean)
-                        }else{
-                            if(Ext.EMPTY == code.code)
-                                mLoading.set(MultiStateView.ViewState.EMPTY)
-                            else{
-                                mLoading.set(MultiStateView.ViewState.ERROR)
-                                ToastUtils.showShort(code.txt)
-                            }
-                        }
+                data.doSuccess {
+                    if(it.isEmpty())
+                        mLoading.set(MultiStateView.ViewState.EMPTY)
+                    else{
+                        mLoading.set(MultiStateView.ViewState.CONTENT)
+                        _locationBeanList.postValue(it)
                     }
                 }
+            }catch (e:Exception){
+                mLoading.set(MultiStateView.ViewState.ERROR)
             }
-        )
+        }
     }
 }
 /*

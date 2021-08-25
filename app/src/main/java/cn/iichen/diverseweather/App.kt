@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.StrictMode
 import com.blankj.utilcode.util.KeyboardUtils
 import com.qweather.sdk.view.HeConfig
+import com.qweather.sdk.view.HeContext
 import com.tencent.mmkv.MMKV
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -26,6 +27,8 @@ class App : Application() {
         HeConfig.switchToDevService()
 
         MMKV.initialize(this)
+
+        HeContext.context = this
     }
 
     private fun init(context: Context) {

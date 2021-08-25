@@ -48,14 +48,14 @@
                     android:maxLines="1"
                     android:padding="@dimen/padding_8"
                     android:singleLine="true"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_15" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/marginRight"
                     android:textColor="@color/colorSecondary"
                     android:id="@+id/cancel"
-                    android:textSize="@dimen/sp_14"
+                    android:textSize="@dimen/sp_15"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:text="@string/cancel"

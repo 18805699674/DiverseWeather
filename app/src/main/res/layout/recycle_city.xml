@@ -10,7 +10,7 @@
         android:id="@+id/city"
         android:gravity="center"
         android:padding="@dimen/padding_10"
-        android:textSize="@dimen/sp_14"
+        android:textSize="@dimen/sp_15"
         android:background="@color/grey"
         android:layout_height="wrap_content"/>
 </LinearLayout>

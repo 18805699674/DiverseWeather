@@ -61,6 +61,13 @@ fun bindingViewState(stateView:MultiStateView,viewState: MultiStateView.ViewStat
     stateView.viewState = viewState
 }
 
+// 时间绑定 android:onClick="@{()-> presenter.loginTask(loginbean)}"
+
+@BindingAdapter("bindRetry")
+fun bindingViewRetry(stateView: MultiStateView,call:()->Unit){
+    stateView.retry(call)
+}
+
 // 点击跳转
 //@BindingAdapter("bindClick")
 //fun bindingClick(view: View, model: PokemonItemModel) {

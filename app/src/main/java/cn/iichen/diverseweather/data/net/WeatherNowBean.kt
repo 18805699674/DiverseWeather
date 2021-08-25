@@ -39,7 +39,7 @@ import com.qweather.sdk.bean.weather.WeatherNowBean
 
 data class WeatherNowBean (
     val code: String? = null,
-    val now: WeatherNowBean.NowBaseBean? = null
+    val now: NowBaseBean? = null
 )
 
 data class NowBaseBean (
@@ -58,7 +58,10 @@ data class NowBaseBean (
     val vis: String? = null,
     val cloud: String? = null,
     val dew: String? = null
-)
+){
+    // 设置 get方法 databinding数据绑定就能找得到
+    fun getWind(): String = "$windDir${windScale}级"
+}
 
 
 
