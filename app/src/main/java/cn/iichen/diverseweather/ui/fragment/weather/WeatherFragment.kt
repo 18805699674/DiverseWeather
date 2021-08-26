@@ -12,6 +12,7 @@ import cn.iichen.diverseweather.base.BaseFragment
 import cn.iichen.diverseweather.databinding.TabFragWeatherBinding
 import cn.iichen.diverseweather.ext.Ext
 import cn.iichen.diverseweather.ext.getHourTime
+import cn.iichen.diverseweather.ui.activity.search.SearchActivity
 import com.blankj.utilcode.util.*
 import com.loc.fe
 import com.tencent.mmkv.MMKV
@@ -19,6 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.observeOn
+import org.jetbrains.anko.startActivity
 
 /**
  *
@@ -66,7 +68,7 @@ class WeatherFragment : BaseFragment() {
 
         mViewModel.apply {
             // location后续从EventBus内获取 并修改后触发重新请求数据刷新页面
-            location = "${mmkv.decodeDouble(Ext.LONGITUDE)},${mmkv.decodeDouble(Ext.LATITUDE)}"
+            location = "${mmkv.decodeString(Ext.LONGITUDE)},${mmkv.decodeString(Ext.LATITUDE)}"
             districk.set( mmkv.decodeString(Ext.DISTRICK))
             nowTime.set(TimeUtils.getNowDate().getHourTime())
             if(!NetworkUtils.isAvailable()) {
@@ -121,6 +123,11 @@ class WeatherFragment : BaseFragment() {
             // 今日详情跳转
             ClickUtils.applyGlobalDebouncing(arrayOf(weatherCard,weatherCard)){
                 ToastUtils.showShort("跳转到今日天气详情")
+            }
+
+            // 添加城市、更改城市(1. 跳转到已添加的地区列表 2. 编辑和添加两个功能入口) 暂时直接跳转到添加
+            weatherAdd.setOnClickListener {
+                context?.startActivity<SearchActivity>()
             }
 
             lifecycleOwner = this@WeatherFragment

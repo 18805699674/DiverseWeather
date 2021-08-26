@@ -52,7 +52,7 @@ class SplashActivity : BaseActivity(){
 
         GlobalScope.launch(Dispatchers.IO) {
             val kv = MMKV.defaultMMKV()
-            if(kv.decodeDouble(Ext.DISTRICK,-1.0)==-1.0) {// 未定位
+            if(kv.decodeString(Ext.DISTRICK).isNullOrEmpty()) {// 未定位
                 withContext(Dispatchers.Main){
                     startActivity<SearchActivity>()
                 }

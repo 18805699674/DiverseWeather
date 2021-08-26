@@ -33,6 +33,7 @@
             <ImageView
                 android:layout_width="@dimen/dp_25"
                 android:src="@mipmap/add"
+                android:id="@+id/weather_add"
                 android:layout_marginEnd="@dimen/marginRight"
                 android:layout_gravity="right|center_vertical"
                 android:layout_height="@dimen/dp_25"
@@ -145,7 +146,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/weather_refresh"
                         android:layout_width="wrap_content"
-                        android:src="@mipmap/icon_100"
                         app:bindingWeatherIcon="@{weatherViewModel.weatherNow.icon}"
                         android:layout_height="wrap_content"/>
 

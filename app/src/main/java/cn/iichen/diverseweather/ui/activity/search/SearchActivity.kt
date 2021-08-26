@@ -15,6 +15,7 @@ import permissions.dispatcher.*
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ClickUtils
 import com.blankj.utilcode.util.ConvertUtils.dp2px
+import com.blankj.utilcode.util.LogUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.qweather.sdk.bean.geo.GeoBean
 import com.tencent.mmkv.MMKV
@@ -64,6 +65,8 @@ class SearchActivity : BaseActivity(){
 
     private val viewmodel : SearchViewModel by viewModels()
     private val topCityAdapter: Adapter by lazy { Adapter(ArrayList()) }
+    private val kv:MMKV by lazy{ MMKV.defaultMMKV()}
+
 
     override fun initView() {
         super.initView()
@@ -101,8 +104,7 @@ class SearchActivity : BaseActivity(){
 
             // 取消按钮时间处理
             ClickUtils.applyGlobalDebouncing(cancel) {
-                val kv = MMKV.defaultMMKV()
-                if (kv.decodeDouble(Ext.DISTRICK, -1.0) == -1.0) {// 未定位
+                if (kv.decodeString(Ext.DISTRICK).isNullOrEmpty()) {// 未定位
                     ToastUtils.showShort(R.string.location_tip)
                     doRequestForegroundLocationPermissionWithPermissionCheck()
                 } else {
@@ -133,8 +135,9 @@ class SearchActivity : BaseActivity(){
             })
         }
 
-        // 申请权限并开启定位
-        doRequestForegroundLocationPermissionWithPermissionCheck()
+        if(kv.decodeString(Ext.DISTRICK).isNullOrEmpty())
+             // 申请权限并开启定位
+            doRequestForegroundLocationPermissionWithPermissionCheck()
     }
 
     // 申请前台位置权限

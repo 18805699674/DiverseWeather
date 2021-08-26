@@ -11,7 +11,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('D:\\Android_work\\DiverseWeather\\keyStore.jks')
+            storeFile file('../keyStore.jks')
             storePassword 'iichen.1124'
             keyAlias 'iichen'
             keyPassword 'iichen.1124'
