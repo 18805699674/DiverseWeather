@@ -10,6 +10,8 @@ import com.qweather.sdk.bean.MinutelyBean
 import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.base.Range
 import com.qweather.sdk.bean.geo.GeoBean
+import com.qweather.sdk.bean.weather.WeatherDailyBean
+import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.view.HeContext.context
 import com.qweather.sdk.view.QWeather
 import kotlinx.coroutines.Dispatchers
@@ -125,6 +127,66 @@ class RepositoryImpl(
                         }
                     }
                 }
+                }
+            )
+        }
+
+    // 15天预报
+    @ExperimentalCoroutinesApi
+    override suspend fun fetchWeather15D(location: String): ApiResult<MutableList<WeatherDailyBean.DailyBean>> =
+        suspendCancellableCoroutine {
+            QWeather.getWeather15D(context, location, object :
+                QWeather.OnResultWeatherDailyListener  {
+                    override fun onError(p0: Throwable?) {
+                        p0?.run {
+                            it.resumeWithException(this)
+                        }
+                    }
+
+                    override fun onSuccess(p0: WeatherDailyBean?) {
+                        p0?.run {
+                            if (Ext.SUCCESS == code.code)// 请求成功且有数据
+                                it.resume(ApiResult.Success(this.daily)) {
+                                    LogUtils.d("数据回调被取消！")
+                                } else {
+                                if (Ext.EMPTY == code.code)
+                                    it.resume(ApiResult.Failure(Throwable("请求的数据为空"))) { LogUtils.d("数据回调被取消！") }
+                                else {
+                                    it.resume(ApiResult.Failure(Throwable(code.txt))) { LogUtils.d("数据回调被取消！") }
+                                }
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+    // 24小数预报
+    override suspend fun fetchWeatherHourly(location: String): ApiResult<MutableList<WeatherHourlyBean.HourlyBean>> =
+        suspendCancellableCoroutine {
+            //getWeather24Hourly   （getWeather72Hourly    getWeather168Hourly 无权限）
+            QWeather.getWeather24Hourly(context, location, object :
+                QWeather.OnResultWeatherHourlyListener  {
+                    override fun onError(p0: Throwable?) {
+                        p0?.run {
+                            it.resumeWithException(this)
+                        }
+                    }
+
+                    override fun onSuccess(p0: WeatherHourlyBean?) {
+                        p0?.run {
+                            if (Ext.SUCCESS == code.code)// 请求成功且有数据
+                                it.resume(ApiResult.Success(this.hourly)) {
+                                    LogUtils.d("数据回调被取消！")
+                                } else {
+                                if (Ext.EMPTY == code.code)
+                                    it.resume(ApiResult.Failure(Throwable("请求的数据为空"))) { LogUtils.d("数据回调被取消！") }
+                                else {
+                                    it.resume(ApiResult.Failure(Throwable(code.txt))) { LogUtils.d("数据回调被取消！") }
+                                }
+                            }
+                        }
+                    }
                 }
             )
         }

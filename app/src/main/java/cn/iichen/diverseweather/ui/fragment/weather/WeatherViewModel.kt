@@ -91,7 +91,7 @@ class WeatherViewModel @ViewModelInject constructor(
     }
 
 
-    // 分钟降水  暂时开发版 无权限
+    // 分钟降水
     fun fetchMinuteLy() {
         viewModelScope.launch {
             try{
@@ -102,7 +102,49 @@ class WeatherViewModel @ViewModelInject constructor(
                 data.doSuccess {
                     LogUtils.d(it.summary)
                     it.minutelyList.forEach {
-                        LogUtils.d("${it.precip}-${it.type}")
+                        LogUtils.d("${it.precip}-${it.type}-${it.fxTime}")
+                    }
+                }
+            }catch (e: Exception){
+                ToastUtils.showShort(e.message ?: "failure")
+                LogUtils.d(e.message ?: "failure")
+            }
+        }
+    }
+
+    // 15天预报
+    fun fetchWeather15D() {
+        viewModelScope.launch {
+            try{
+                val data = repository.fetchWeather15D(location)
+                data.doFailure {
+                    ToastUtils.showShort(it?.message ?: "failure")
+                }
+                data.doSuccess {
+                    LogUtils.d(it)
+                    it.forEach {
+                        LogUtils.d("15天预报 ${it.precip}-${it.fxDate}-${it.sunrise}")
+                    }
+                }
+            }catch (e: Exception){
+                ToastUtils.showShort(e.message ?: "failure")
+                LogUtils.d(e.message ?: "failure")
+            }
+        }
+    }
+
+    // 24小数预报
+    fun fetchWeatherHourly() {
+        viewModelScope.launch {
+            try{
+                val data = repository.fetchWeatherHourly(location)
+                data.doFailure {
+                    ToastUtils.showShort(it?.message ?: "failure")
+                }
+                data.doSuccess {
+                    LogUtils.d(it)
+                    it.forEach {
+                        LogUtils.d("24小数预报 ${it.precip}-${it.pop}-${it.text}--${it.fxTime}")
                     }
                 }
             }catch (e: Exception){

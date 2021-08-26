@@ -75,8 +75,11 @@ class WeatherFragment : BaseFragment() {
                 // 请求实时天气
                 fetchWeatherNow().observe(this@WeatherFragment){}
                 // 请求分钟降水  开发版无权限调用
-//                fetchMinuteLy()
-
+                fetchMinuteLy()
+                // 15天预报
+                fetchWeather15D()
+                // 24小数预报
+                fetchWeatherHourly()
             }
         }
     }

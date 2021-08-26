@@ -36,6 +36,16 @@ object Versions {
     const val permission = "4.9.1"
     const val loading = "1.4.0"
     const val recycle = "3.0.4"
+    const val mpChart = "v3.1.0"
+    const val calendar = "3.7.1"
+}
+
+object Calendar{
+    const val core = "com.haibin:calendarview:${Versions.calendar}"
+}
+
+object MpChart{
+    const val core = "com.github.PhilJay:MPAndroidChart:${Versions.mpChart}"
 }
 
 object BaseRecycle{

@@ -117,7 +117,12 @@ class App : Application() {
     BaseQuickAdapter:   https://github.com/CymChad/BaseRecyclerViewAdapterHelper/blob/master/readme/1-BaseQuickAdapter.md
 
 
+    日历插件：   https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md
+
+
     天气Api修改为 WebApi ：   https://dev.qweather.com/docs/api/
+
+
  */
 
 
